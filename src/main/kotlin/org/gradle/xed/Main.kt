@@ -18,7 +18,7 @@ class Main : Plugin<Project> {
             pluginInfo = extensions.create("pluginInfo", PluginInfo::class.java)
             project.extensions.create("keepDependencies", KeepDependenciesExtension::class.java)
 
-            dependencies.add("compileOnly", files(File(layout.projectDirectory.asFile,"xed/xed.jar")))
+            dependencies.add("compileOnly", files(File(layout.projectDirectory.asFile,"sdk/xed-editor-sdk.jar")))
 
             tasks.named("jar", Jar::class.java).configure { jarTask ->
                 val tmpDir = File(layout.buildDirectory.asFile.get(), "xtmp").also {
@@ -33,8 +33,8 @@ class Main : Plugin<Project> {
                 tmpDir.listFiles()?.forEach { it.deleteRecursively() }
                 with(jarTask) {
                     destinationDirectory.set(tmpDir)
-
-                    createPropertiesFile(processManifest(pluginInfo), File(tmpDir, "manifest.properties").absolutePath)
+                    val prop = File(tmpDir, "manifest.properties")
+                    createPropertiesFile(processManifest(pluginInfo), prop.absolutePath)
 
                     val res = File(layout.projectDirectory.asFile, "src/main/resources")
                     if (res.exists() and res.listFiles().isNullOrEmpty().not()) {
@@ -76,7 +76,7 @@ class Main : Plugin<Project> {
                             println(getKeepLibMesage(runtimeJars.first().nameWithoutExtension))
                         }
 
-                        Packaging(tmpDir,pluginInfo.outputDir ?: File(layout.projectDirectory.asFile,"output"),pluginInfo.pluginName!!)
+                        Packaging(tmpDir,pluginInfo.outputDir ?: File(layout.projectDirectory.asFile,"output"),pluginInfo.pluginName!!,prop)
                     }
                 }
 

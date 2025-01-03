@@ -8,35 +8,15 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.nio.file.Path
+import java.util.*
 
-class Packaging (inputDir:File,outputDir:File,name:String){
+class Packaging (inputDir:File,outputDir:File,name:String,proprtiesFile:File){
     init {
         if (inputDir.exists().not()){
             throw GradleException("Packaging : Input Directory doesn't exist")
         }
         if (outputDir.exists().not()){
             outputDir.mkdirs()
-        }
-
-        fun create(inputFile: String, outputFile: String) {
-            val keyBytes = arrayOf<Byte>(88, 101, 100, 45, 69, 100, 105, 116, 111, 114)
-            val keyLength = keyBytes.size
-
-            FileInputStream(inputFile).use { input ->
-                FileOutputStream(outputFile).use { output ->
-                    val buffer = ByteArray(4096)
-                    var bytesRead: Int
-                    var keyIndex = 0
-
-                    while (input.read(buffer).also { bytesRead = it } != -1) {
-                        for (i in 0 until bytesRead) {
-                            buffer[i] = (buffer[i].toInt() xor keyBytes[keyIndex % keyLength].toInt()).toByte()
-                            keyIndex++
-                        }
-                        output.write(buffer, 0, bytesRead)
-                    }
-                }
-            }
         }
 
         val code = File(inputDir,"code").also { if (it.exists().not()){it.mkdirs()} }
@@ -54,26 +34,34 @@ class Packaging (inputDir:File,outputDir:File,name:String){
             }
         }
 
+
+        val properties = Properties()
+
+        if (proprtiesFile.exists()) {
+            FileInputStream(proprtiesFile).use { inputStream ->
+                properties.load(inputStream)
+            }
+        }
+
+        val libs = mutableListOf<String>()
+
         runCatching {
             inputDir.listFiles()!!.forEach { file ->
                 if (file.name.endsWith("jar")){
                     convertJarToDex(file.toPath(),code.toPath())
+                    libs.add(file.name)
                     file.delete()
                 }
             }
 
-            val zip = File(inputDir.parent,"tempBuild")
-            val xp = File(outputDir,"$name.xp")
+            val serializedArray = libs.joinToString(",")
+            properties.setProperty("code", serializedArray)
 
-            with(xp){
-                if (exists()){
-                    delete()
-                    createNewFile()
-                }else{
-                    createNewFile()
-                }
+            FileOutputStream(proprtiesFile).use { outputStream ->
+                properties.store(outputStream, "code")
             }
 
+            val zip = File(outputDir,"$name.plugin")
             with(zip){
                 if (exists()){
                     delete()
@@ -83,10 +71,7 @@ class Packaging (inputDir:File,outputDir:File,name:String){
                 }
             }
 
-
             createZipFile(inputDir, zip)
-            create(zip.absolutePath,xp.absolutePath)
-            zip.delete()
             inputDir.deleteRecursively()
         }.onFailure {
             throw GradleException(it.message+"\n"+it.stackTraceToString(),it.cause)

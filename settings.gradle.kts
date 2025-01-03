@@ -3,4 +3,4 @@ plugins {
 }
 
 
-rootProject.name = "xedPlugin"
+rootProject.name = "Xed-Editor-Sdk"

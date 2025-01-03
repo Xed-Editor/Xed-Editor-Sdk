@@ -13,6 +13,7 @@ open class PluginInfo {
     var packageName: String? = null
     var mainClass: String? = null
     var author: String? = null
+    var description:String? = null
 
 
     //optional
@@ -41,6 +42,9 @@ fun PluginInfo.verify() {
     }
     if (mainClass.isNullOrEmpty()) {
         throw GradleException("Error: 'mainClass' is invalid or not configured. Please set mainClass to a non-null and non-empty value.")
+    }
+    if(description.isNullOrEmpty()){
+        throw GradleException("Error: 'description' is invalid or not configured. Please set mainClass to a non-null and non-empty value.")
     }
 }
 
