@@ -16,4 +16,5 @@ jobs:
         run: |
           echo "Received artifact_url: ${{ github.event.client_payload.artifact_url }}"
           curl -o build.tar.gz ${{ github.event.client_payload.artifact_url }}
+          tar -xvf build.tar.gz
           ls
