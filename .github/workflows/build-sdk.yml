@@ -18,6 +18,6 @@ jobs:
           curl -o build.tar.gz ${{ github.event.client_payload.artifact_url }}
           mkdir -p xedBuild
           tar -xf build.tar.gz -C xedBuild
-          bash $PWD/.github/workflows/update.sh
+          bash $PWD/.github/workflows/update.sh $PWD
           ls
           ls xedBuild
