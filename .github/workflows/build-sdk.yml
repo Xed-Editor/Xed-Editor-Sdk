@@ -1,0 +1,23 @@
+name: Process Build Artifact
+
+on:
+  repository_dispatch:
+    types: [build_artifact_trigger]
+
+jobs:
+  process-build-artifact:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download the build directory
+        run: |
+          ARTIFACT_URL="${{ github.event.client_payload.artifact_url }}"
+          echo "Downloading the artifact from: $ARTIFACT_URL"
+
+      - name: Extract and process the artifact
+        run: |
+          tar -xzf build_directory.tar.gz
+          # Add additional steps to process the build here
