@@ -12,6 +12,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Log payload
+      - name: Log and download artifact
         run: |
-          echo "Received artifact_url: ${{ github.event.client_payload }}"
+          echo "Received artifact_url: ${{ github.event.client_payload.artifact_url }}"
+          curl -O ${{ github.event.client_payload.artifact_url }}
