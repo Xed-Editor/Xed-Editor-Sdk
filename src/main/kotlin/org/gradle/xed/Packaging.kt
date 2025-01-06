@@ -49,7 +49,7 @@ class Packaging (inputDir:File,outputDir:File,name:String,proprtiesFile:File){
             inputDir.listFiles()!!.forEach { file ->
                 if (file.name.endsWith("jar")){
                     convertJarToDex(file.toPath(),code.toPath())
-                    libs.add(file.name)
+                    libs.add(file.nameWithoutExtension+".dex")
                     file.delete()
                 }
             }
