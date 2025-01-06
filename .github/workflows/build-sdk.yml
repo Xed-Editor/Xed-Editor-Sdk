@@ -14,16 +14,4 @@ jobs:
 
       - name: Log payload
         run: |
-          echo "Received artifact_url: ${{ github.event.client_payload.artifact_url }}"
-
-      - name: Download the build artifact
-        run: |
-          ARTIFACT_URL="${{ github.event.client_payload.artifact_url }}"
-          echo "Downloading artifact from: $ARTIFACT_URL"
-          curl -L -o build_directory.tar.gz "$ARTIFACT_URL"
-
-      - name: Extract and process the artifact
-        run: |
-          tar -xzf build_directory.tar.gz
-          ls -l
-          # Add additional processing steps here
+          echo "Received artifact_url: ${{ github.event.client_payload }}"
