@@ -29,4 +29,8 @@ jobs:
           du -h output
           mv output/* xed-editor-sdk.jar
 
-          
+      - name: Upload xed-editor-sdk.jar
+        uses: actions/upload-artifact@v3
+        with:
+          name: xed-editor-sdk
+          path: xed-editor-sdk.jar
