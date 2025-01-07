@@ -39,8 +39,8 @@ jobs:
 
 
           PAYLOAD=$(jq -n \
-            --arg url "$ARTIFACT_URL" \
-            '{event_type: "upload_artifact_trigger", client_payload:  client_payload: {artifact_url: $url, version: "1.0"}}')
+          --arg url "$ARTIFACT_URL" \
+          '{event_type: "upload_artifact_trigger", client_payload: {artifact_url: $url, version: "1.0"}}')
 
           echo "Payload to be sent:"
           echo "$PAYLOAD"
