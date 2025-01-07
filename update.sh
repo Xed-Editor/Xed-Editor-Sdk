@@ -12,8 +12,5 @@ for MODULE in $MODULES; do
         MODULE_NAME=$(basename "$MODULE")
         OUTPUT_JAR="$OUTPUT_DIR/$MODULE_NAME.jar"
         cp "$FULL_JAR_PATH" "$OUTPUT_JAR"
-        echo "Copied $FULL_JAR_PATH to $OUTPUT_JAR"
-    else
-        echo "Warning: full.jar not found for module $MODULE"
     fi
 done
