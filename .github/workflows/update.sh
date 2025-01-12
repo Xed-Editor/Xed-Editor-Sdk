@@ -11,4 +11,5 @@ for MODULE in $MODULES; do
         MODULE_NAME=$(basename "$MODULE")
         OUTPUT_JAR="$OUTPUT_DIR/$MODULE_NAME.jar"
         cp "$FULL_JAR_PATH" "$OUTPUT_JAR"
+    fi
 done
