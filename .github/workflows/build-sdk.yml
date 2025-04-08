@@ -19,8 +19,6 @@ jobs:
           mkdir -p xedBuild
           tar -xf build.tar.gz -C xedBuild
           bash $PWD/.github/workflows/update.sh $PWD/xedBuild
-          curl -o android.jar "https://raw.githubusercontent.com/Sable/android-platforms/master/android-35/android.jar"
-          mv android.jar libs
           rm -rf .gradle
           chmod +x gradlew
           ./gradlew shadowJar

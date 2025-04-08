@@ -1,1 +1,1 @@
-./gradlew shadowJar && cp -r output/Xed-Editor-Sdk-*.jar ../examplePlugin/sdk/xed-editor-sdk.jar
+./gradlew shadowJar && cp -r output/Xed-Editor-Sdk-*.jar ../GitClient/sdk/xed-editor-sdk.jar
